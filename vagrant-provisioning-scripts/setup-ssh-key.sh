@@ -12,9 +12,26 @@ fi
 
 cat > /home/vagrant/.ssh/config <<ENDSSHCONFIG
 Host *
-    User ubuntu
-    StrictHostKeyChecking=no
-    IdentityFile ~/.ssh/spin-gocd-key
+  User ubuntu
+  StrictHostKeyChecking=no
+  IdentityFile ~/.ssh/spin-gocd-key
+
+Host bastion
+  Hostname <<BASTION_PUBLIC_IP>>
+  ForwardAgent yes
+  IdentityFile ~/.ssh/spin-gocd-key
+  User ubuntu
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+
+Host goserver
+  Hostname <<TARGET_HOST_PRIVATE_IP>>
+  IdentityFile ~/.ssh/spin-gocd-key
+  User ubuntu
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+  ProxyCommand ssh -q bastion nc %h %p
+
 ENDSSHCONFIG
 
 
