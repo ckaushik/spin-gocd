@@ -7,6 +7,6 @@ output "main_subnet_id" {
   value = "${aws_subnet.public_subnet.id}"
 }
 
-output "ssh_securitygroup_id" {
-  value = "${aws_security_group.limited_ssh_access.id}"
+output "default_securitygroup_id" {
+  value = "${aws_security_group.default_security.id}"
 }

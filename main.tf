@@ -31,7 +31,7 @@ resource "aws_instance" "gocd" {
   }
   instance_type = "t2.micro"
   ami = "${lookup(var.aws_amis, var.aws_region)}"
-  vpc_security_group_ids = ["${module.vpc.ssh_securitygroup_id}"]
+  vpc_security_group_ids = ["${module.vpc.default_securitygroup_id}"]
   subnet_id = "${module.vpc.main_subnet_id}"
   key_name = "${aws_key_pair.auth.id}"
   # associate_public_ip_address = true

@@ -95,7 +95,7 @@ resource "aws_route_table_association" "route_public_subnet" {
 
 
 
-resource "aws_security_group" "limited_ssh_access" {
+resource "aws_security_group" "default_security" {
   tags {
     Name = "${var.service_name} Inbound SSH"
     Environment = "${var.environment}"
@@ -110,6 +110,15 @@ resource "aws_security_group_rule" "limited_ssh_inbound" {
   to_port = 22
   protocol = "tcp"
   cidr_blocks = ["${var.allowed_ip}/32"]
-  security_group_id = "${aws_security_group.limited_ssh_access.id}"
+  security_group_id = "${aws_security_group.default_security.id}"
+}
+
+resource "aws_security_group_rule" "everything_out" {
+  type = "egress"
+  from_port = 0
+  to_port = 65535
+  protocol = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  security_group_id = "${aws_security_group.default_security.id}"
 }
 
