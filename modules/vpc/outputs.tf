@@ -4,7 +4,7 @@ output "vpc_id" {
 }
 
 output "main_subnet_id" {
-  value = "${aws_subnet.main_subnet.id}"
+  value = "${aws_subnet.public_subnet.id}"
 }
 
 output "ssh_securitygroup_id" {

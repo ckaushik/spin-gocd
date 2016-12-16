@@ -24,7 +24,7 @@ distclean: clean
 update:
 	bundle clean --force
 
-terraform.tfstate: *.tf
+terraform.tfstate: *.tf modules/*/*.tf
 	terraform apply -var allowed_ip=$(MY_IP)
 
 .tmp/TARGET_HOST: terraform.tfstate
