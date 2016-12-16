@@ -17,7 +17,7 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = true
 }
 
-resource "aws_route_table" "public" {
+resource "aws_route_table" "public_routes" {
   tags {
     Name = "${var.service_name} Public Route Table"
     Environment = "${var.environment}"
@@ -26,13 +26,13 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route" "public_gateway_route" {
-  route_table_id = "${aws_route_table.public.id}"
-  depends_on = ["aws_route_table.public"]
+  route_table_id = "${aws_route_table.public_routes.id}"
+  depends_on = ["aws_route_table.public_routes"]
   destination_cidr_block = "0.0.0.0/0"
   gateway_id = "${aws_internet_gateway.vpc_module.id}"
 }
 
 resource "aws_route_table_association" "route_public_subnet" {
   subnet_id = "${aws_subnet.public_subnet.id}"
-  route_table_id = "${aws_route_table.public.id}"
+  route_table_id = "${aws_route_table.public_routes.id}"
 }
