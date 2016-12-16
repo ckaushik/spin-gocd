@@ -44,7 +44,6 @@ resource "aws_instance" "gocd" {
 # sudo /etc/init.d/go-server [start|stop|status|restart]
 
 
-
 output "gocd_server_ip" {
   value = "${aws_eip.gocd_eip.public_ip}"
 }
