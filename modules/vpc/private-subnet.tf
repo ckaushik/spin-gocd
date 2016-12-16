@@ -38,9 +38,32 @@ resource "aws_route_table_association" "routes_for_private_subnet" {
   route_table_id = "${aws_route_table.private_routes.id}"
 }
 
-# resource "aws_route" "outbound_nat" {
-#   route_table_id = "${aws_route_table.public_routes.id}"
-#   destination_cidr_block = "0.0.0.0/0"
-#   nat_eip_id = "${aws_nat_gateway.vpc_module.id}"
-# }
+resource "aws_security_group" "common_access_private_hosts" {
+  tags {
+    Name = "${var.service_name} Common Rules for Private Subnet"
+    Environment = "${var.environment}"
+  }
+  name = "common_access_private_hosts"
+  vpc_id = "${aws_vpc.vpc_module.id}"
+  lifecycle {
+    create_before_destroy = true
+  }
+}
 
+resource "aws_security_group_rule" "ssh_inbound_from_bastion" {
+  type = "ingress"
+  from_port = 22
+  to_port = 22
+  protocol = "tcp"
+  source_security_group_id = "${aws_security_group.bastion_host_access.id}"
+  security_group_id = "${aws_security_group.common_access_private_hosts.id}"
+}
+
+resource "aws_security_group_rule" "all_outbound_from_private" {
+  type = "egress"
+  from_port = 0
+  to_port = 0
+  protocol = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+  security_group_id = "${aws_security_group.common_access_private_hosts.id}"
+}

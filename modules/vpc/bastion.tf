@@ -6,7 +6,7 @@ resource "aws_instance" "bastion_host" {
   }
   instance_type = "t2.micro"
   ami = "${lookup(var.aws_amis, var.aws_region)}"
-  vpc_security_group_ids = ["${aws_security_group.access_for_bastion_host.id}"]
+  vpc_security_group_ids = ["${aws_security_group.bastion_host_access.id}"]
   subnet_id = "${aws_subnet.public_subnet.id}"
   key_name = "${aws_key_pair.bastion_keys.id}"
 }
@@ -25,7 +25,7 @@ resource "aws_eip_association" "bastion_eip" {
   allocation_id = "${aws_eip.bastion_eip.id}"
 }
 
-resource "aws_security_group" "access_for_bastion_host" {
+resource "aws_security_group" "bastion_host_access" {
   tags {
     Name = "${var.service_name} Bastion Security Rules"
     Environment = "${var.environment}"
@@ -37,51 +37,30 @@ resource "aws_security_group" "access_for_bastion_host" {
   }
 }
 
-resource "aws_security_group_rule" "ssh_inbound" {
+resource "aws_security_group_rule" "ssh_inbound_to_bastion" {
   type = "ingress"
   from_port = 22
   to_port = 22
   protocol = "tcp"
   cidr_blocks = ["${var.allowed_ip}/32"]
-  security_group_id = "${aws_security_group.access_for_bastion_host.id}"
+  security_group_id = "${aws_security_group.bastion_host_access.id}"
 }
 
-resource "aws_security_group_rule" "ping_inbound" {
+resource "aws_security_group_rule" "ping_inbound_to_bastion" {
   type = "ingress"
   from_port = 8
   to_port = 0
   protocol = "icmp"
   cidr_blocks = ["${var.allowed_ip}/32"]
-  security_group_id = "${aws_security_group.access_for_bastion_host.id}"
+  security_group_id = "${aws_security_group.bastion_host_access.id}"
 }
 
-resource "aws_security_group_rule" "all_outbound" {
+resource "aws_security_group_rule" "all_outbound_from_bastion" {
   type = "egress"
   from_port = 0
   to_port = 0
   protocol = "-1"
   cidr_blocks = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.access_for_bastion_host.id}"
-}
-
-resource "aws_security_group" "accessible_from_bastion" {
-  tags {
-    Name = "${var.service_name} Accessible from Bastion"
-    Environment = "${var.environment}"
-  }
-  name = "accessible_from_bastion"
-  vpc_id = "${aws_vpc.vpc_module.id}"
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_security_group_rule" "ssh_from_bastion" {
-  type = "ingress"
-  from_port = 22
-  to_port = 22
-  protocol = "tcp"
-  cidr_blocks = ["${aws_instance.bastion_host.private_ip}/32"]
-  security_group_id = "${aws_security_group.accessible_from_bastion.id}"
+  security_group_id = "${aws_security_group.bastion_host_access.id}"
 }
 

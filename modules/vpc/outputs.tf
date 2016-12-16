@@ -7,8 +7,8 @@ output "private_subnet_id" {
   value = "${aws_subnet.private_subnet.id}"
 }
 
-output "default_securitygroup_id" {
-  value = "${aws_security_group.accessible_from_bastion.id}"
+output "common_private_security_group_id" {
+  value = "${aws_security_group.common_access_private_hosts.id}"
 }
 
 output "bastion_host_ip" {
