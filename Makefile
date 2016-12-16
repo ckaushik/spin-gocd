@@ -29,7 +29,7 @@ terraform.tfstate: *.tf modules/*/*.tf
 
 .tmp/TARGET_HOST: terraform.tfstate
 	mkdir -p .tmp
-	terraform output | awk -F' *= *' '$$1 == "gocd_server_ip" { print $$2 }' > .tmp/TARGET_HOST
+	terraform output | awk -F' *= *' '$$1 == "bastion_host_ip" { print $$2 }' > .tmp/TARGET_HOST
 
 Gemfile.lock: Gemfile
 	bundle install

@@ -10,3 +10,4 @@ options[:timeout] = 10
 
 set :host,        options[:host_name] || host
 set :ssh_options, options
+

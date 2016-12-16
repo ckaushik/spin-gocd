@@ -10,3 +10,8 @@ output "main_subnet_id" {
 output "default_securitygroup_id" {
   value = "${aws_security_group.default_security.id}"
 }
+
+output "bastion_host_ip" {
+  value = "${aws_eip.bastion_eip.public_ip}"
+}
+
