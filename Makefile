@@ -13,7 +13,7 @@ test : export TARGET_HOST = $(shell cat .tmp/TARGET_HOST)
 test : export BASTION_HOST = $(shell cat .tmp/BASTION_HOST)
 
 test: apply hosts Gemfile.lock
-	rspec spec/gocd_server/ssh_spec.rb
+	rspec spec/gocd_server/*_spec.rb
 
 clean:
 
