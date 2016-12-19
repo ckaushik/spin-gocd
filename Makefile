@@ -13,11 +13,11 @@ test : export TARGET_HOST = $(shell cat .tmp/TARGET_HOST)
 test : export BASTION_HOST = $(shell cat .tmp/BASTION_HOST)
 
 test: hosts Gemfile.lock
-	rspec spec/gocd_server/*_spec.rb
+	bundle exec rspec spec/gocd_server/*_spec.rb
 
-clean:
+destroy: distclean
 
-distclean: clean
+distclean:
 	terraform destroy -force -var allowed_ip=$(MY_IP)
 	rm -f terraform.tfstate terraform.tfstate.backup
 	rm -f .tmp/*_HOST

@@ -5,7 +5,7 @@ describe "private_instance" do
 
   host = ENV['TARGET_HOST']
 
-  describe ec2('GoCD Server') do
+  describe ec2_running('GoCD Server') do
     it { should exist }
   end
 

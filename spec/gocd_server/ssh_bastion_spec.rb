@@ -5,8 +5,8 @@ describe "bastion host" do
 
   host = ENV['BASTION_HOST']
 
-  describe ec2('SSH Bastion Host') do
-    it { should be_running }
+  describe ec2_running('SSH Bastion Host') do
+    it { should exist }
   end
 
   describe command('ls -al /') do

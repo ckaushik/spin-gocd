@@ -1,3 +1,16 @@
+GIT
+  remote: https://github.com/kief/awspec.git
+  revision: 4eb38f3864555826e2c10baf6041871cdd38614f
+  specs:
+    awspec (0.61.0)
+      activesupport (~> 4.0)
+      aws-sdk (>= 2.2, < 2.7)
+      awsecrets (~> 1.5.0)
+      rspec (~> 3.0)
+      rspec-its
+      term-ansicolor
+      thor
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -19,14 +32,6 @@ GEM
     awsecrets (1.5.0)
       aws-sdk (>= 2.2, < 2.7)
       aws_config (= 0.0.4)
-    awspec (0.61.0)
-      activesupport (~> 4.0)
-      aws-sdk (>= 2.2, < 2.7)
-      awsecrets (~> 1.5.0)
-      rspec (~> 3.0)
-      rspec-its
-      term-ansicolor
-      thor
     diff-lcs (1.2.5)
     i18n (0.7.0)
     jmespath (1.3.1)
@@ -76,7 +81,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  awspec
+  awspec!
   serverspec
 
 BUNDLED WITH
