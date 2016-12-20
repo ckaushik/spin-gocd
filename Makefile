@@ -1,6 +1,8 @@
 
 MY_IP=$(shell curl -s icanhazip.com)
 
+specs := $(wildcard *.k)
+
 plan: *.tf get
 	terraform plan -var allowed_ip=$(MY_IP)
 
@@ -13,8 +15,7 @@ test : export TARGET_HOST = $(shell cat .tmp/TARGET_HOST)
 test : export BASTION_HOST = $(shell cat .tmp/BASTION_HOST)
 
 test: hosts Gemfile.lock
-	bundle exec rspec spec/gocd_server/private_instance_spec.rb
-	bundle exec rspec spec/gocd_server/ssh_bastion_spec.rb
+	./run-specs.sh
 
 destroy: distclean
 
