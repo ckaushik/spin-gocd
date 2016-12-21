@@ -11,7 +11,6 @@ apply: terraform.tfstate get
 get:
 	terraform get
 
-test : export TARGET_HOST = $(shell cat .tmp/TARGET_HOST)
 test : export BASTION_HOST = $(shell cat .tmp/BASTION_HOST)
 
 test: hosts Gemfile.lock
@@ -30,11 +29,7 @@ update:
 terraform.tfstate: *.tf modules/*/*.tf
 	terraform apply -var allowed_ip=$(MY_IP)
 
-hosts: .tmp/TARGET_HOST .tmp/BASTION_HOST
-
-.tmp/TARGET_HOST: terraform.tfstate
-	mkdir -p .tmp
-	terraform output | awk -F' *= *' '$$1 == "goserver_ip" { print $$2 }' > .tmp/TARGET_HOST
+hosts: .tmp/BASTION_HOST
 
 .tmp/BASTION_HOST: terraform.tfstate
 	mkdir -p .tmp
