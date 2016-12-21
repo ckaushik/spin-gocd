@@ -12,6 +12,7 @@ def get_ssh_options(host, bastion_host = nil)
   options[:user] = user
   options[:keys] = private_key_file
   options[:user_known_hosts_file] = '/dev/null'
+  # options[:verbose] = :debug
   options[:timeout] = 10
   unless bastion_host.nil?
     options[:forward_agent] = true
