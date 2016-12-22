@@ -4,15 +4,6 @@ resource "aws_key_pair" "gokeys" {
   public_key = "${file(var.public_key_path)}"
 }
 
-# resource "aws_eip" "gocd_eip" {
-#   vpc = true
-# }
-
-# resource "aws_eip_association" "gocd_eip" {
-#   instance_id = "${aws_instance.gocd.id}"
-#   allocation_id = "${aws_eip.gocd_eip.id}"
-# }
-
 resource "aws_instance" "go_server" {
   tags {
     Name = "GoCD Server"
@@ -23,7 +14,6 @@ resource "aws_instance" "go_server" {
   vpc_security_group_ids = ["${module.vpc.common_private_security_group_id}"]
   subnet_id = "${module.vpc.private_subnet_id}"
   key_name = "${aws_key_pair.gokeys.id}"
-  # associate_public_ip_address = true
 }
 
 # echo "deb https://download.go.cd /" | sudo tee /etc/apt/sources.list.d/gocd.list

@@ -1,35 +1,28 @@
 
 MY_IP=$(shell curl -s icanhazip.com)
 
-specs := $(wildcard *.k)
+all: plan
 
 plan: *.tf get
 	terraform plan -var allowed_ip=$(MY_IP)
 
-apply: terraform.tfstate get
+apply: terraform.tfstate
 
-get:
-	terraform get
-
-test : export BASTION_HOST = $(shell cat .tmp/BASTION_HOST)
-
-test: hosts Gemfile.lock
-	./run-specs.sh
-
-destroy: distclean
-
-distclean:
+destroy: ~/.ssh/gocd-key
 	terraform destroy -force -var allowed_ip=$(MY_IP)
 	rm -f terraform.tfstate terraform.tfstate.backup
 	rm -f .tmp/*_HOST
 
-update:
-	bundle clean --force
+get:
+	terraform get
 
-terraform.tfstate: *.tf modules/*/*.tf
+test: export BASTION_HOST = $(shell cat .tmp/BASTION_HOST)
+
+test: apply .tmp/BASTION_HOST Gemfile.lock
+	./run-specs.sh
+
+terraform.tfstate: *.tf ~/.ssh/gocd-key get
 	terraform apply -var allowed_ip=$(MY_IP)
-
-hosts: .tmp/BASTION_HOST
 
 .tmp/BASTION_HOST: terraform.tfstate
 	mkdir -p .tmp
@@ -38,3 +31,5 @@ hosts: .tmp/BASTION_HOST
 Gemfile.lock: Gemfile
 	bundle install
 
+~/.ssh/gocd-key:
+	ssh-keygen -N '' -C 'gocd-key' -f ~/.ssh/gocd-key

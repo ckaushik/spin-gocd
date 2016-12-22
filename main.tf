@@ -5,7 +5,7 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "modules/vpc"
+  source = "github.com/kief/spin-vpc/modules/vpc"
   service_name = "GoCD"
   environment = "${var.environment}"
   allowed_ip = "${var.allowed_ip}"
