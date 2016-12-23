@@ -4,11 +4,15 @@ require 'spec_helper_aws'
 describe ec2_running('GoCD Server') do
 
   before(:all) do
-    host = described_class.private_ip
+    target_host = described_class.private_ip
     bastion_host = ENV['BASTION_HOST']
-
-    options = get_ssh_options(host, bastion_host)
-    set :host, options[:host_name] || host
+    options = get_ssh_options(
+      target_host,
+      target_host_key: '/home/vagrant/.ssh/spin-gocd-key',
+      bastion_host: bastion_host,
+      bastion_host_key: '/home/vagrant/.ssh/spin-bastion-key'
+    )
+    set :host, target_host
     set :ssh_options, options
   end
 
@@ -23,6 +27,10 @@ describe ec2_running('GoCD Server') do
 
     describe interface('eth0') do
       its(:ipv4_address) { should match /10\.0\.2\./ }
+    end
+
+    describe service('go-server') do
+      it { should be_enabled }
     end
   end
 
