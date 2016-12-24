@@ -20,6 +20,7 @@ test: apply .tmp/BASTION_HOST .tmp/GO_SERVER quick-test
 
 quick-test: export BASTION_HOST = $(shell cat .tmp/BASTION_HOST)
 quick-test: export GO_SERVER = $(shell cat .tmp/GO_SERVER)
+quick-test: export GO_PUBLIC_HOST = $(shell cat .tmp/GO_PUBLIC_HOST)
 
 quick-test: Gemfile.lock
 	./run-specs.sh
@@ -34,6 +35,10 @@ terraform.tfstate: *.tf ssh_keys get
 .tmp/GO_SERVER: terraform.tfstate
 	mkdir -p .tmp
 	terraform output | awk -F' *= *' '$$1 == "goserver_ip" { print $$2 }' > .tmp/GO_SERVER
+
+.tmp/GO_PUBLIC_HOST: terraform.tfstate
+	mkdir -p .tmp
+	terraform output | awk -F' *= *' '$$1 == "go_server_lb_dns" { print $$2 }' > .tmp/GO_PUBLIC_HOST
 
 Gemfile.lock: Gemfile
 	bundle install
@@ -73,8 +78,7 @@ export SSHCONFIG_GOSERVER
 
 ~/.ssh/spin_config: export GO_SERVER = $(shell cat .tmp/GO_SERVER)
 
- # .tmp/GO_SERVER .tmp/BASTION_HOST ssh_keys terraform.tfstate
-~/.ssh/spin_config:
+~/.ssh/spin_config: .tmp/GO_SERVER .tmp/BASTION_HOST ssh_keys terraform.tfstate
 	echo "Host bastion" > $@
 	echo "  Hostname $(BASTION_HOST)" >> $@
 	echo "$$SSHCONFIG_BASTION" >> $@

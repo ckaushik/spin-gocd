@@ -16,6 +16,10 @@ describe ec2_running('GoCD Server') do
     set :ssh_options, options
   end
 
+  let(:goserver_ip) {
+    described_class.private_ip
+  }
+
   context 'within the environment' do
     it { should exist }
   end
@@ -26,11 +30,19 @@ describe ec2_running('GoCD Server') do
     end
 
     describe interface('eth0') do
-      its(:ipv4_address) { should match /10\.0\.2\./ }
+      its(:ipv4_address) { should match /10\.0\.4\./ }
     end
 
     describe service('go-server') do
       it { should be_enabled }
+    end
+
+    describe port(8153) do
+      it { should be_listening }
+    end
+
+    describe port(8154) do
+      it { should be_listening }
     end
   end
 
