@@ -22,3 +22,10 @@ variable "bastion_ssh_key_public_file" {
 }
 
 variable "allowed_ip" {}
+
+variable "gocd_ssl_certificate_arn" {}
+
+variable "gocd_dns_name" {}
+
+variable "parent_domain" {}
+

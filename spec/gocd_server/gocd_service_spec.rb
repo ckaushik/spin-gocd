@@ -15,8 +15,12 @@ describe alb('gocd-server-alb-sandbox') do
 
   context 'from allowed IP address' do
     it 'accepts HTTP connections' do
-      puts "Connecting to http://#{gocd_service_hostname}:8153/go/home"
       response = connect_with_retry("http://#{gocd_service_hostname}:8153/go/home")
+      expect(response.code).to eq('302')
+    end
+
+    it 'accepts HTTPS connections' do
+      response = connect_with_retry("https://#{gocd_service_hostname}:8154/go/home")
       expect(response.code).to eq('302')
     end
   end

@@ -41,19 +41,32 @@ resource "aws_alb" "gocd_lb" {
   }
 }
 
-resource "aws_alb_listener" "gocd_listener" {
+resource "aws_alb_listener" "gocd_listener_http" {
   load_balancer_arn = "${aws_alb.gocd_lb.id}"
   port              = 8153
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = "${aws_alb_target_group.gocd_group.id}"
+    target_group_arn = "${aws_alb_target_group.gocd_group_http.id}"
     type             = "forward"
   }
 }
 
-resource "aws_alb_target_group" "gocd_group" {
-  name     = "gocd-lb-group-${var.environment}"
+resource "aws_alb_listener" "gocd_listener_https" {
+  load_balancer_arn = "${aws_alb.gocd_lb.id}"
+  port              = 8154
+  protocol          = "HTTPS"
+  ssl_policy = "ELBSecurityPolicy-2015-05"
+  certificate_arn = "${var.gocd_ssl_certificate_arn}"
+
+  default_action {
+    target_group_arn = "${aws_alb_target_group.gocd_group_https.id}"
+    type             = "forward"
+  }
+}
+
+resource "aws_alb_target_group" "gocd_group_http" {
+  name     = "gocd-lb-group-http-${var.environment}"
   port     = 8153
   protocol = "HTTP"
   vpc_id   = "${module.vpc.vpc_id}"
@@ -67,10 +80,31 @@ resource "aws_alb_target_group" "gocd_group" {
   }
 }
 
-resource "aws_alb_target_group_attachment" "gocd_group_to_instance" {
-  target_group_arn = "${aws_alb_target_group.gocd_group.arn}"
+resource "aws_alb_target_group" "gocd_group_https" {
+  name     = "gocd-lb-group-https-${var.environment}"
+  port     = 8154
+  protocol = "HTTPS"
+  vpc_id   = "${module.vpc.vpc_id}"
+  tags {
+    Name = "GoCD LB Group SSL"
+    Environment = "${var.environment}"
+  }
+  health_check {
+    path = "/go/home"
+    matcher = "200,301,302"
+  }
+}
+
+resource "aws_alb_target_group_attachment" "gocd_group_to_instance_http" {
+  target_group_arn = "${aws_alb_target_group.gocd_group_http.arn}"
   target_id = "${aws_instance.go_server.id}"
   port = 8153
+}
+
+resource "aws_alb_target_group_attachment" "gocd_group_to_instance_https" {
+  target_group_arn = "${aws_alb_target_group.gocd_group_https.arn}"
+  target_id = "${aws_instance.go_server.id}"
+  port = 8154
 }
 
 output "gocd_lb_dns" {
