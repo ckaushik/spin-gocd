@@ -20,13 +20,13 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    aws-sdk (2.6.40)
-      aws-sdk-resources (= 2.6.40)
-    aws-sdk-core (2.6.40)
+    aws-sdk (2.6.42)
+      aws-sdk-resources (= 2.6.42)
+    aws-sdk-core (2.6.42)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.6.40)
-      aws-sdk-core (= 2.6.40)
+    aws-sdk-resources (2.6.42)
+      aws-sdk-core (= 2.6.42)
     aws-sigv4 (1.0.0)
     aws_config (0.0.4)
     awsecrets (1.5.0)
@@ -64,7 +64,7 @@ GEM
       rspec-its
       specinfra (~> 2.53)
     sfl (2.3)
-    specinfra (2.66.2)
+    specinfra (2.66.3)
       net-scp
       net-ssh (>= 2.7, < 4.0)
       net-telnet
@@ -85,4 +85,4 @@ DEPENDENCIES
   serverspec
 
 BUNDLED WITH
-   1.13.6
+   1.13.7
