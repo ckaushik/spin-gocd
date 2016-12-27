@@ -5,7 +5,7 @@ describe elb('gocd-server-alb-sandbox') do
 
   let(:gocd_service_hostname) {
     # described_class.dns_name
-'gocd-server-alb-sandbox-2049151228.eu-west-1.elb.amazonaws.com'
+'gocd-server-alb-sandbox-761086302.eu-west-1.elb.amazonaws.com'
   }
 
   # it { should exist }

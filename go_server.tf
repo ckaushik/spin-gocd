@@ -13,30 +13,30 @@ resource "aws_instance" "go_server" {
   ami = "${lookup(var.aws_amis, var.aws_region)}"
   vpc_security_group_ids = [
     "${module.vpc.common_private_security_group_id}",
-    "${aws_security_group.alb_to_goserver.id}"
+    "${aws_security_group.gocd_server_ruleset.id}"
   ]
   subnet_id = "${module.vpc.private_subnet_id}"
   key_name = "${aws_key_pair.gocd_keypair.id}"
   user_data = "${file("provisioning-scripts/gocd_server.sh")}"
 }
 
-resource "aws_security_group" "alb_to_goserver" {
+resource "aws_security_group" "gocd_server_ruleset" {
   tags {
-    Name = "GoCD Server Connection"
+    Name = "Load Balancer to GoCD Server"
     Environment = "${var.environment}"
   }
-  name = "alb_to_goserver"
+  name = "gocd_server_ruleset"
   vpc_id = "${module.vpc.vpc_id}"
 }
 
-resource "aws_security_group_rule" "limited_gocd_inbound" {
+resource "aws_security_group_rule" "allow_gocd_ports_in_from_lb" {
   type = "ingress"
   from_port = 8153
   to_port = 8154
   protocol = "tcp"
-  # source_security_group_id = "${aws_security_group.external_to_goserver_alb.id}"
+  # source_security_group_id = "${aws_security_group.gocd_lb_ruleset.id}"
   cidr_blocks = ["10.0.0.0/16"]
-  security_group_id = "${aws_security_group.alb_to_goserver.id}"
+  security_group_id = "${aws_security_group.gocd_server_ruleset.id}"
 }
 
 output "goserver_ip" {
