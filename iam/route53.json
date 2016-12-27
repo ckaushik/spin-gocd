@@ -1,0 +1,25 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:ListHostedZones",
+        "route53:CreateHostedZone"
+      ],
+      "Resource": [
+        "arn:aws:route53:::hostedzone/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "route53:*",
+        "route53domains:*"
+      ],
+      "Resource": [
+        "arn:aws:route53:::hostedzone/ID:Z3HNHXRUA3WG07"
+      ]
+    }
+  ]
+}
