@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/kief/awspec.git
-  revision: 6333cd1bc2ddf4ccbf5472f80a283eeaf6af9650
+  revision: 470769621dce46543e1d0e417d8abc80e6dd08f2
   specs:
     awspec (0.61.0)
       activesupport (~> 4.0)

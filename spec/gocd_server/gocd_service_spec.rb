@@ -1,14 +1,17 @@
-require 'spec_helper_aws'
 require 'spec_helper_http'
+require 'spec_helper_aws'
 
-describe elb('gocd-server-alb-sandbox') do
+describe alb('gocd-server-alb-sandbox') do
 
   let(:gocd_service_hostname) {
-    # described_class.dns_name
-'gocd-server-alb-sandbox-761086302.eu-west-1.elb.amazonaws.com'
+    described_class.dns_name
   }
 
-  # it { should exist }
+  it { is_expected.to exist }
+
+  it 'has a reasonable-looking DNS name' do
+    expect(described_class.dns_name).to match /^gocd-server-alb-sandbox/
+  end
 
   context 'from allowed IP address' do
     it 'accepts HTTP connections' do
