@@ -16,7 +16,7 @@ destroy: ssh_keys
 get:
 	terraform get
 
-test: apply .tmp/BASTION_HOST .tmp/GO_SERVER quick-test
+test: apply .tmp/BASTION_HOST .tmp/GO_SERVER .tmp/GO_PUBLIC_HOST quick-test
 
 quick-test: export BASTION_HOST = $(shell cat .tmp/BASTION_HOST)
 quick-test: export GO_SERVER = $(shell cat .tmp/GO_SERVER)

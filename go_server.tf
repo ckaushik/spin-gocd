@@ -22,7 +22,7 @@ resource "aws_instance" "go_server" {
 
 resource "aws_security_group" "alb_to_goserver" {
   tags {
-    Name = "ALB Connectivity to GoCD Server"
+    Name = "GoCD Server Connection"
     Environment = "${var.environment}"
   }
   name = "alb_to_goserver"
@@ -34,7 +34,8 @@ resource "aws_security_group_rule" "limited_gocd_inbound" {
   from_port = 8153
   to_port = 8154
   protocol = "tcp"
-  source_security_group_id = "${aws_security_group.external_to_goserver_alb.id}"
+  # source_security_group_id = "${aws_security_group.external_to_goserver_alb.id}"
+  cidr_blocks = ["10.0.0.0/16"]
   security_group_id = "${aws_security_group.alb_to_goserver.id}"
 }
 
