@@ -15,3 +15,6 @@ resource "aws_route53_record" "gocd_hostname" {
   }
 }
 
+output "gocd_service_hostname" {
+  value = "${aws_route53_record.gocd_hostname.name}"
+}
