@@ -55,7 +55,7 @@ Generate access keys for this user, and put them into your aws_credentials file.
 
 ### DNS Zone in Route53
 
-This project uses Terraform to assign a DNS name to the GoCD server using Route53. See the file [domain.tf](blob/master/domain.tf) for this - it just needs to be able to create a record. I have a domain I use for this, whose name servers are pointed to the AWS name servers for the zone in Route53. I don't have anything else important under this domain.
+This project uses Terraform to assign a DNS name to the GoCD server using Route53. See the file [domain.tf](domain.tf) for this - it just needs to be able to create a record. I have a domain I use for this, whose name servers are pointed to the AWS name servers for the zone in Route53. I don't have anything else important under this domain.
 
 The name of this domain goes into a file named `CONFIG_DOMAIN` in this directory. This is only used by the Makefile to generate an SSL certificate request to the AWS Certificate Management service. So if you're doing something different for the SSL certificate, you shouldn't need this file.
 
