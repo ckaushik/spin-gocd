@@ -4,3 +4,4 @@
 crash.log
 terraform.out
 my.tfvars
+CONFIG_DOMAIN

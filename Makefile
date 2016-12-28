@@ -1,5 +1,7 @@
 
 MY_IP=$(shell curl -s icanhazip.com)
+ENVIRONMENT?=sandbox
+BASE_DOMAIN=$(shell cat CONFIG_DOMAIN)
 
 all: plan
 
@@ -89,11 +91,16 @@ export SSHCONFIG_GOSERVER
 	echo "" >> $@
 
 check-env:
-ifndef GOCD_DNS_NAME
-	$(error GOCD_DNS_NAME is undefined)
+ifndef BASE_DOMAIN
+	$(error BASE_DOMAIN is undefined, should be in file CONFIG_DOMAIN)
 endif
 
+certificate: .certificate-arn
+
 .certificate-arn: check-env
+	@echo "Generating certificate request for ${ENVIRONMENT}.${BASE_DOMAIN}"
 	aws acm request-certificate \
-		--domain-name ${GOCD_DNS_NAME} \
+		--domain-name "${ENVIRONMENT}.${BASE_DOMAIN}" \
+		--subject-alternative-names "gocd.${ENVIRONMENT}.${BASE_DOMAIN}" \
 		--idempotency-token 12345 > .certificate-arn
+	@echo "Verification email should be sent to whois owner of ${BASE_DOMAIN}"

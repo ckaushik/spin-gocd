@@ -1,29 +1,23 @@
 require 'spec_helper_http'
-require 'spec_helper_aws'
 
-# describe alb('gocd-server-alb-sandbox') do
+describe 'gocd_service' do
 
-#   let(:gocd_service_hostname) {
-#     described_class.dns_name
-#   }
+  let(:gocd_service_hostname) {
+    'gocd.sandbox.cloudspin.net'
+  }
 
-#   it { is_expected.to exist }
+  context 'from allowed IP address' do
+    it 'accepts HTTP connections' do
+      response = connect_with_retry("http://#{gocd_service_hostname}:8153/go/home")
+      expect(response.code).to eq('302')
+    end
 
-#   it 'has a reasonable-looking DNS name' do
-#     expect(described_class.dns_name).to match /^gocd-server-alb-sandbox/
-#   end
+    it 'accepts HTTPS connections' do
+      puts "Connect to: https://#{gocd_service_hostname}:8154/go/home"
+      response = connect_with_retry("https://#{gocd_service_hostname}:8154/go/home")
+      expect(response.code).to eq('302')
+    end
+  end
 
-#   context 'from allowed IP address' do
-#     it 'accepts HTTP connections' do
-#       response = connect_with_retry("http://#{gocd_service_hostname}:8153/go/home")
-#       expect(response.code).to eq('302')
-#     end
-
-#     it 'accepts HTTPS connections' do
-#       response = connect_with_retry("https://#{gocd_service_hostname}:8154/go/home")
-#       expect(response.code).to eq('302')
-#     end
-#   end
-
-# end
+end
 
