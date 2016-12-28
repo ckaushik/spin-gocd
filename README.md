@@ -46,7 +46,7 @@ The main permissions the IAM user will need are:
 - Route53
 - Certificate Request
 
-I've got some policy files in the [iam](../tree/master/iam) folder of this project. I haven't implemented automation for applying these, I currently use the AWS console. These permissions are also more liberal than are probably needed, especially those for route53. I'd like to limit these appropriately, for example make sure that the user only has permission to mess with records in the one domain.
+I've got some policy files in the [iam](iam) folder of this project. I haven't implemented automation for applying these, I currently use the AWS console. These permissions are also more liberal than are probably needed, especially those for route53. I'd like to limit these appropriately, for example make sure that the user only has permission to mess with records in the one domain.
 
 I usually only add the certificate request policy when I need to request a certificate, and remove it afterwards.
 
@@ -55,7 +55,7 @@ Generate access keys for this user, and put them into your aws_credentials file.
 
 ### DNS Zone in Route53
 
-This project uses Terraform to assign a DNS name to the GoCD server using Route53. See the file [domain.tf](../blob/master/domain.tf) for this - it just needs to be able to create a record. I have a domain I use for this, whose name servers are pointed to the AWS name servers for the zone in Route53. I don't have anything else important under this domain.
+This project uses Terraform to assign a DNS name to the GoCD server using Route53. See the file [domain.tf](blob/master/domain.tf) for this - it just needs to be able to create a record. I have a domain I use for this, whose name servers are pointed to the AWS name servers for the zone in Route53. I don't have anything else important under this domain.
 
 The name of this domain goes into a file named `CONFIG_DOMAIN` in this directory. This is only used by the Makefile to generate an SSL certificate request to the AWS Certificate Management service. So if you're doing something different for the SSL certificate, you shouldn't need this file.
 
