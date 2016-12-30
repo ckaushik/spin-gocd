@@ -91,6 +91,7 @@ resource "aws_alb_target_group" "gocd_group_https" {
   }
   health_check {
     path = "/go/home"
+    protocol = "HTTPS"
     matcher = "200,301,302"
   }
 }
