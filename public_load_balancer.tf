@@ -13,8 +13,8 @@ resource "aws_security_group" "gocd_lb_ruleset" {
 
 resource "aws_security_group_rule" "lb_allow_gocd_ports_in" {
   type = "ingress"
-  from_port = 8153
-  to_port = 8154
+  from_port = "${var.http_port}"
+  to_port = "${var.https_port}"
   protocol = "tcp"
   cidr_blocks = ["${var.allowed_ip}/32"]
   security_group_id = "${aws_security_group.gocd_lb_ruleset.id}"
@@ -43,7 +43,7 @@ resource "aws_alb" "gocd_lb" {
 
 resource "aws_alb_listener" "gocd_listener_http" {
   load_balancer_arn = "${aws_alb.gocd_lb.id}"
-  port              = 8153
+  port              = "${var.http_port}"
   protocol          = "HTTP"
 
   default_action {
@@ -54,7 +54,7 @@ resource "aws_alb_listener" "gocd_listener_http" {
 
 resource "aws_alb_listener" "gocd_listener_https" {
   load_balancer_arn = "${aws_alb.gocd_lb.id}"
-  port              = 8154
+  port              = "${var.https_port}"
   protocol          = "HTTPS"
   ssl_policy = "ELBSecurityPolicy-2015-05"
   certificate_arn = "${var.gocd_ssl_certificate_arn}"

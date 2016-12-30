@@ -25,6 +25,14 @@ variable "bastion_ssh_key_public_file" {
   default = "/home/vagrant/.ssh/spin-bastion-key.pub"
 }
 
+variable "http_port" {
+  default = "80"
+}
+
+variable "https_port" {
+  default = "443"
+}
+
 variable "allowed_ip" {}
 
 variable "gocd_ssl_certificate_arn" {}
