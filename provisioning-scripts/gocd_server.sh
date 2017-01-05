@@ -4,6 +4,8 @@ echo "deb https://download.gocd.io /" | sudo tee /etc/apt/sources.list.d/gocd.li
 curl -s https://download.gocd.io/GOCD-GPG-KEY.asc | sudo apt-key add -
 apt-get update
 apt-get install go-server -y
+apt-get install git-core -y
+
 service go-server stop
 
 cat > /etc/go/cruise-config.xml <<ENDCONFIG
@@ -31,4 +33,3 @@ chown go:go /var/lib/go-server/plugins/external/yaml-config-plugin-*.jar
 
 service go-server start
 
-apt-get install git-core
