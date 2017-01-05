@@ -4,7 +4,7 @@ echo "deb https://download.gocd.io /" | sudo tee /etc/apt/sources.list.d/gocd.li
 curl -s https://download.gocd.io/GOCD-GPG-KEY.asc | sudo apt-key add -
 apt-get update
 apt-get install go-agent -y
-apt-get install git-core make -y
+apt-get install git-core make unzip -y
 
 service go-agent stop
 
@@ -22,3 +22,13 @@ chown -R go:go /var/lib/go-agent
 
 service go-agent start
 
+
+# Install Terraform. And think about building our own AMI.
+mkdir /tmp/terraform
+cd /tmp/terraform
+curl -Os https://releases.hashicorp.com/terraform/0.8.2/terraform_0.8.2_linux_amd64.zip
+unzip -q terraform_0.8.2_linux_amd64.zip
+rm terraform_0.8.2_linux_amd64.zip
+cd /tmp
+mv terraform /usr/local/
+ln -s /usr/local/terraform/terraform /usr/local/bin/
