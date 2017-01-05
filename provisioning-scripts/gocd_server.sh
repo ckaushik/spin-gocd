@@ -7,18 +7,21 @@ apt-get install go-server -y
 service go-server stop
 
 cat > /etc/go/cruise-config.xml <<ENDCONFIG
+<?xml version="1.0" encoding="utf-8"?>
+<cruise xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cruise-config.xsd" schemaVersion="87">
 <server artifactsdir="artifacts"
-  agentAutoRegisterKey="${gocd_agent_key}" 
-  commandRepositoryLocation="default"
-  serverId="" />
-<config-repos>
-  <config-repo plugin="yaml.config.plugin">
-    <git url="${git_repo_url}" />
-  </config-repo>
-</config-repos>
+    agentAutoRegisterKey="${gocd_agent_key}" 
+    commandRepositoryLocation="default"
+    serverId="" />
+  <config-repos>
+    <config-repo plugin="yaml.config.plugin">
+      <git url="${git_repo_url}" />
+    </config-repo>
+  </config-repos>
+</cruise>
 ENDCONFIG
-
-chown go:go /etc/go/cruise-config.xml
+cp /etc/go/cruise-config.xml /etc/go/cruise-config.xml.debug
+chown go:go /etc/go/cruise-config.xml*
 
 ( 
   cd /var/lib/go-server/plugins/external
