@@ -4,6 +4,15 @@ resource "aws_key_pair" "gocd_keypair" {
   public_key = "${file(var.gocd_server_ssh_key_public_file)}"
 }
 
+data "template_file" "go_server_provisioning_script" {
+  template = "${file("provisioning-scripts/gocd_server.sh")}"
+
+  vars {
+    git_repo_url = "${var.git_repo_url}"
+    gocd_agent_key = "${var.gocd_agent_key}"
+  }
+}
+
 resource "aws_instance" "go_server" {
   tags {
     Name = "GoCD Server"
@@ -17,7 +26,7 @@ resource "aws_instance" "go_server" {
   ]
   subnet_id = "${module.vpc.private_subnet_id}"
   key_name = "${aws_key_pair.gocd_keypair.id}"
-  user_data = "${file("provisioning-scripts/gocd_server.sh")}"
+  user_data = "${data.template_file.go_server_provisioning_script.rendered}"
 }
 
 resource "aws_security_group" "gocd_server_ruleset" {
@@ -29,7 +38,7 @@ resource "aws_security_group" "gocd_server_ruleset" {
   vpc_id = "${module.vpc.vpc_id}"
 }
 
-resource "aws_security_group_rule" "allow_gocd_ports_in_from_lb" {
+resource "aws_security_group_rule" "allow_gocd_ports_into_server" {
   type = "ingress"
   from_port = 8153
   to_port = 8154

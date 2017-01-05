@@ -34,10 +34,9 @@ variable "https_port" {
 }
 
 variable "allowed_ip" {}
-
 variable "gocd_ssl_certificate_arn" {}
-
 variable "gocd_dns_name" {}
-
 variable "parent_domain" {}
+variable "git_repo_url" {}
+variable "gocd_agent_key" {}
 
