@@ -89,6 +89,9 @@ export SSHCONFIG_GOSERVER
 	echo "  Hostname $(GO_SERVER)" >> $@
 	echo "$$SSHCONFIG_GOSERVER" >> $@
 	echo "" >> $@
+	echo "Host 10.0.*" >> $@
+	echo "$$SSHCONFIG_GOSERVER" >> $@
+	echo "" >> $@
 
 check-env:
 ifndef BASE_DOMAIN
