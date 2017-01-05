@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/kief/awspec.git
-  revision: 470769621dce46543e1d0e417d8abc80e6dd08f2
+  revision: 273a7c262b7bc7a71a6f3830ad4520eb22d36081
   specs:
-    awspec (0.61.0)
+    awspec (0.61.1)
       activesupport (~> 4.0)
       aws-sdk (>= 2.2, < 2.7)
       awsecrets (~> 1.5.0)
@@ -20,13 +20,13 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    aws-sdk (2.6.42)
-      aws-sdk-resources (= 2.6.42)
-    aws-sdk-core (2.6.42)
+    aws-sdk (2.6.44)
+      aws-sdk-resources (= 2.6.44)
+    aws-sdk-core (2.6.44)
       aws-sigv4 (~> 1.0)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.6.42)
-      aws-sdk-core (= 2.6.42)
+    aws-sdk-resources (2.6.44)
+      aws-sdk-core (= 2.6.44)
     aws-sigv4 (1.0.0)
     aws_config (0.0.4)
     awsecrets (1.5.0)
