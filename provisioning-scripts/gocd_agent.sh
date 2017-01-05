@@ -4,6 +4,7 @@ echo "deb https://download.gocd.io /" | sudo tee /etc/apt/sources.list.d/gocd.li
 curl -s https://download.gocd.io/GOCD-GPG-KEY.asc | sudo apt-key add -
 apt-get update
 apt-get install go-agent -y
+apt-get install git-core -y
 
 service go-agent stop
 
@@ -21,4 +22,3 @@ chown -R go:go /var/lib/go-agent
 
 service go-agent start
 
-apt-get install git-core
