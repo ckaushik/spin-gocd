@@ -33,11 +33,17 @@ variable "https_port" {
   default = "443"
 }
 
+variable "gocd_git_repo_url" {
+  default = "https://github.com/kief/spin-gocd.git"
+}
+
+variable "vpc_git_repo_url" {
+  default = "https://github.com/kief/spin-vpc.git"
+}
+
 variable "allowed_ip" {}
 variable "gocd_ssl_certificate_arn" {}
 variable "gocd_dns_name" {}
 variable "parent_domain" {}
-variable "git_repo_url" {}
 variable "gocd_agent_key" {}
 variable "iam_instance_profile_for_builder" {}
-

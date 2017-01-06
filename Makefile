@@ -5,6 +5,9 @@ BASE_DOMAIN=$(shell cat CONFIG_DOMAIN)
 
 all: plan
 
+validate: *.tf
+	terraform validate
+
 plan: *.tf ssh_keys get
 	terraform plan -var allowed_ip=$(MY_IP) -var-file=my.tfvars
 

@@ -8,7 +8,8 @@ data "template_file" "go_server_provisioning_script" {
   template = "${file("provisioning-scripts/gocd_server.sh")}"
 
   vars {
-    git_repo_url = "${var.git_repo_url}"
+    gocd_git_repo_url = "${var.gocd_git_repo_url}"
+    vpc_git_repo_url = "${var.vpc_git_repo_url}"
     gocd_agent_key = "${var.gocd_agent_key}"
   }
 }

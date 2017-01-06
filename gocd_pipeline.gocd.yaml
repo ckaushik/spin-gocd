@@ -1,0 +1,23 @@
+pipelines:
+  gocd_definition:
+    group: cloud_spin
+    materials:
+      spin_vpc_git:
+        git: https://github.com/kief/spin-gocd.git
+    stages:
+      - validate:
+          jobs:
+            validate_syntax:
+              tasks:
+                - exec:
+                    command: make
+                    arguments:
+                      - validate
+      - plan:
+          jobs:
+            run_plan:
+              tasks:
+                - exec:
+                    command: make
+                    arguments:
+                      - plan
