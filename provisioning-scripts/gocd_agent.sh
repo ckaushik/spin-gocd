@@ -2,6 +2,12 @@
 
 echo "deb https://download.gocd.io /" | sudo tee /etc/apt/sources.list.d/gocd.list
 curl -s https://download.gocd.io/GOCD-GPG-KEY.asc | sudo apt-key add -
+
+apt-get install -y software-properties-common apt-transport-https
+
+add-apt-repository -y ppa:webupd8team/java
+apt-add-repository -y ppa:brightbox/ruby-ng
+
 apt-get update
 apt-get install go-agent -y
 apt-get install git-core make unzip -y
@@ -32,7 +38,6 @@ rm terraform_0.8.2_linux_amd64.zip
 cd /tmp
 mv terraform /usr/local/
 ln -s /usr/local/terraform/terraform /usr/local/bin/
-
 
 # Install Ruby. And think some more about building an AMI.
 apt-get install -y ruby2.3 ruby2.3-dev liblzma-dev zlib1g-dev
