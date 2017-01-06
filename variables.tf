@@ -39,4 +39,5 @@ variable "gocd_dns_name" {}
 variable "parent_domain" {}
 variable "git_repo_url" {}
 variable "gocd_agent_key" {}
+variable "iam_instance_profile_for_builder" {}
 
