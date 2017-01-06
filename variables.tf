@@ -33,10 +33,6 @@ variable "https_port" {
   default = "443"
 }
 
-variable "gocd_git_repo_url" {
-  default = "https://github.com/kief/spin-gocd.git"
-}
-
 variable "vpc_git_repo_url" {
   default = "https://github.com/kief/spin-vpc.git"
 }

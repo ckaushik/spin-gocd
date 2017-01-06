@@ -1,6 +1,6 @@
 
 resource "aws_autoscaling_group" "go_agent_pool" {
-  name = "${aws_launch_configuration.launch_a_go_agent.name}-pool"
+  name = "go-agent-pool"
   max_size = 2
   min_size = 1
   desired_capacity = 1

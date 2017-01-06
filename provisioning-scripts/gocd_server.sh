@@ -19,9 +19,6 @@ cat > /etc/go/cruise-config.xml <<ENDCONFIG
     <config-repo plugin="yaml.config.plugin">
       <git url="${vpc_git_repo_url}" />
     </config-repo>
-    <config-repo plugin="yaml.config.plugin">
-      <git url="${gocd_git_repo_url}" />
-    </config-repo>
   </config-repos>
 </cruise>
 ENDCONFIG
