@@ -31,7 +31,7 @@ resource "aws_launch_configuration" "launch_a_go_agent" {
   key_name = "${aws_key_pair.gocd_keypair.id}"
   user_data = "${data.template_file.go_agent_provisioning_script.rendered}"
   depends_on = ["aws_instance.go_server"]
-  lifecycle { create_before_destroy = true }
+  # lifecycle { create_before_destroy = true }
 }
 
 data "template_file" "go_agent_provisioning_script" {
