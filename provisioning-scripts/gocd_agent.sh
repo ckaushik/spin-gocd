@@ -7,10 +7,17 @@ apt-get install -y software-properties-common apt-transport-https
 
 add-apt-repository -y ppa:webupd8team/java
 apt-add-repository -y ppa:brightbox/ruby-ng
-
 apt-get update
-apt-get install go-agent -y
-apt-get install git-core make unzip -y
+
+echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
+
+apt-get install -y oracle-java8-installer \
+  oracle-java8-set-default \
+  go-agent \
+  git-core \
+  make \
+  unzip
 
 service go-agent stop
 
