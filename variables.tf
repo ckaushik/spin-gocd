@@ -1,7 +1,4 @@
 
-variable "environment" {
-  default = "sandbox"
-}
 
 variable "aws_region" {
   default = "eu-west-1"
@@ -37,6 +34,7 @@ variable "vpc_git_repo_url" {
   default = "https://github.com/kief/spin-vpc.git"
 }
 
+variable "environment" {}
 variable "allowed_ip" {}
 variable "gocd_ssl_certificate_arn" {}
 variable "gocd_dns_name" {}
