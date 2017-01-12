@@ -8,18 +8,38 @@ all: plan
 validate: *.tf
 	terraform validate
 
-plan: *.tf ssh_keys get
-	terraform plan -var allowed_ip=$(MY_IP) -var-file=my.tfvars
+plan: *.tf ssh_keys init-terraform
+	terraform plan -var allowed_ip=$(MY_IP) -var environment=$(ENVIRONMENT) -var-file=my.tfvars
 
 apply: terraform.tfstate
 
-destroy: ssh_keys
-	terraform destroy -force -var allowed_ip=$(MY_IP) -var-file=my.tfvars
-	rm -f terraform.tfstate terraform.tfstate.backup
-	rm -f .tmp/*_HOST
+terraform.tfstate: *.tf ssh_keys init-terraform
+	terraform apply -var allowed_ip=$(MY_IP) -var environment=$(ENVIRONMENT) -var-file=my.tfvars
 
-get:
+destroy: ssh_keys init-terraform
+	@echo "Destroying the remote environment"
+	terraform destroy -force -var allowed_ip=$(MY_IP) -var environment=$(ENVIRONMENT) -var-file=my.tfvars
+	rm -rf .terraform
+	rm -f terraform.tfstate terraform.tfstate.backup
+	rm -rf .tmp
+
+clean:
+	@echo "Cleaning local state, not touching the remote environment"
+	rm -rf .terraform
+	rm -f terraform.tfstate terraform.tfstate.backup
+	rm -rf .tmp
+
+init-terraform: get-module get-state
+
+get-module:
 	terraform get
+
+get-state: check-env
+	terraform remote config \
+    -backend=s3 \
+    -backend-config="bucket=$(BASE_DOMAIN).tfstate" \
+    -backend-config="key=$(ENVIRONMENT)/gocd/terraform.tfstate" \
+    -backend-config="region=eu-west-1"
 
 test: apply .tmp/BASTION_HOST .tmp/GO_SERVER .tmp/GO_PUBLIC_HOST quick-test
 
@@ -29,9 +49,6 @@ quick-test: export GO_PUBLIC_HOST = $(shell cat .tmp/GO_PUBLIC_HOST)
 
 quick-test: Gemfile.lock
 	./run-specs.sh
-
-terraform.tfstate: *.tf ssh_keys get
-	terraform apply -var allowed_ip=$(MY_IP) -var-file=my.tfvars
 
 .tmp/BASTION_HOST: terraform.tfstate
 	mkdir -p .tmp
@@ -97,7 +114,7 @@ export SSHCONFIG_GOSERVER
 	echo "" >> $@
 
 check-env:
-ifndef BASE_DOMAIN
+ifeq ($(BASE_DOMAIN),)
 	$(error BASE_DOMAIN is undefined, should be in file CONFIG_DOMAIN)
 endif
 
