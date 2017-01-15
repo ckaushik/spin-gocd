@@ -16,6 +16,7 @@ data "template_file" "go_server_provisioning_script" {
 resource "aws_instance" "go_server" {
   tags {
     Name = "GoCD Server"
+    Service = "gocd"
     Environment = "${var.environment}"
   }
   instance_type = "t2.micro"
@@ -32,6 +33,7 @@ resource "aws_instance" "go_server" {
 resource "aws_security_group" "gocd_server_ruleset" {
   tags {
     Name = "Load Balancer to GoCD Server"
+    Service = "gocd"
     Environment = "${var.environment}"
   }
   name = "gocd_server_ruleset"
