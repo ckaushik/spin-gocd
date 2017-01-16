@@ -6,7 +6,7 @@ provider "aws" {
 
 module "vpc" {
   source = "github.com/kief/spin-vpc/modules/vpc"
-  service_name = "GoCD"
+  vpc_name = "gocd"
   environment = "${var.environment}"
   allowed_ip = "${var.allowed_ip}"
   bastion_ssh_key_public_file = "${var.bastion_ssh_key_public_file}"

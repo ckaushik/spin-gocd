@@ -19,7 +19,7 @@ resource "aws_autoscaling_group" "go_agent_pool" {
     propagate_at_launch = true
   }
   tag {
-    key = "Service"
+    key = "Vpc"
     value = "gocd"
     propagate_at_launch = true
   }
@@ -55,7 +55,7 @@ data "template_file" "go_agent_provisioning_script" {
 resource "aws_security_group" "gocd_agent_ruleset" {
   tags {
     Name = "GoCD Agent Rules"
-    Service = "gocd"
+    Vpc = "gocd"
     Environment = "${var.environment}"
   }
   name = "gocd_agent_ruleset"

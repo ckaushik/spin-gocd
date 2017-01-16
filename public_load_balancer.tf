@@ -5,7 +5,7 @@
 resource "aws_security_group" "gocd_lb_ruleset" {
   tags {
     Name = "GoCD Load Balancer Rules"
-    Service = "gocd"
+    Vpc = "gocd"
     Environment = "${var.environment}"
   }
   name = "gocd_lb_ruleset"
@@ -38,7 +38,7 @@ resource "aws_alb" "gocd_lb" {
   subnets = ["${module.vpc.public_subnet_ids}"]
   tags {
     Name = "GoCD LB for ${var.environment} "
-    Service = "gocd"
+    Vpc = "gocd"
     Environment = "${var.environment}"
   }
 }
@@ -74,7 +74,7 @@ resource "aws_alb_target_group" "gocd_group_http" {
   vpc_id   = "${module.vpc.vpc_id}"
   tags {
     Name = "GoCD LB Group"
-    Service = "gocd"
+    Vpc = "gocd"
     Environment = "${var.environment}"
   }
   health_check {
@@ -90,7 +90,7 @@ resource "aws_alb_target_group" "gocd_group_https" {
   vpc_id   = "${module.vpc.vpc_id}"
   tags {
     Name = "GoCD LB Group SSL"
-    Service = "gocd"
+    Vpc = "gocd"
     Environment = "${var.environment}"
   }
   health_check {
