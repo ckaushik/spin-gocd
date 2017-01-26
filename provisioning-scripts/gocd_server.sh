@@ -37,6 +37,8 @@ cp /etc/go/cruise-config.xml /etc/go/cruise-config.xml.debug
 chown go:go /etc/go/cruise-config.xml*
 
 ( 
+  mkdir -p /var/lib/go-server/plugins/external
+  chown -R go:go /var/lib/go-server/plugins/external
   cd /var/lib/go-server/plugins/external
   curl -sLO https://github.com/tomzo/gocd-yaml-config-plugin/releases/download/0.4.0/yaml-config-plugin-0.4.0.jar
 )
