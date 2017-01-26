@@ -1,11 +1,21 @@
 #!/bin/bash
 
+# apt repo for gocd
 echo "deb https://download.gocd.io /" | sudo tee /etc/apt/sources.list.d/gocd.list
 curl -s https://download.gocd.io/GOCD-GPG-KEY.asc | sudo apt-key add -
 
+# apt repo for JDK
+add-apt-repository -y ppa:webupd8team/java
+echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections
+
 apt-get update
-apt-get install go-server -y
-apt-get install git-core make -y
+
+apt-get install -y oracle-java8-installer \
+  oracle-java8-set-default \
+  go-server \
+  git-core \
+  make
 
 service go-server stop
 
