@@ -42,7 +42,7 @@ chown go:go /etc/go/cruise-config.xml*
   cd /var/lib/go-server/plugins/external
   curl -sLO https://github.com/tomzo/gocd-yaml-config-plugin/releases/download/0.4.0/yaml-config-plugin-0.4.0.jar
 )
-chown go:go /var/lib/go-server/plugins/external/yaml-config-plugin-*.jar
+chown -R go:go /var/lib/go-server/plugins
 
 service go-server start
 
