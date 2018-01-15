@@ -1,7 +1,7 @@
 
 
 variable "aws_region" {
-  default = "eu-west-1"
+  default = "ap-south-1"
 }
 
 variable "aws_profile" {
@@ -10,7 +10,7 @@ variable "aws_profile" {
 
 variable "aws_amis" {
   default = {
-    eu-west-1 = "ami-ac772edf"
+    eu-west-1 = "ami-43d0982c"
   }
 }
 
@@ -32,6 +32,10 @@ variable "https_port" {
 
 variable "vpc_git_repo_url" {
   default = "https://github.com/kief/spin-vpc.git"
+}
+
+variable "availability_zones" {
+  default = {}
 }
 
 variable "environment" {}

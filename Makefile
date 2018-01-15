@@ -35,11 +35,12 @@ get-module:
 	terraform get
 
 get-state: check-env
-	terraform remote config \
-    -backend=s3 \
+	terraform init \
     -backend-config="bucket=$(BASE_DOMAIN).tfstate" \
     -backend-config="key=$(ENVIRONMENT)/gocd/terraform.tfstate" \
-    -backend-config="region=eu-west-1"
+	-backend-config="region=ap-south-1" \
+	-backend=true \
+	-force-copy
 
 test: apply .tmp/BASTION_HOST .tmp/GO_SERVER .tmp/GO_PUBLIC_HOST quick-test
 
