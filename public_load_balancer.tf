@@ -9,15 +9,15 @@ resource "aws_security_group" "gocd_lb_ruleset" {
     Environment = "${var.environment}"
   }
   name = "gocd_lb_ruleset"
-  vpc_id = "${module.vpc.vpc_id}"
+  vpc_id = "${var.vpc_id}"
 }
 
 resource "aws_security_group_rule" "lb_allow_gocd_ports_in" {
   type = "ingress"
-  from_port = "${var.http_port}"
+  from_port = "${var.https_port}"
   to_port = "${var.https_port}"
   protocol = "tcp"
-  cidr_blocks = ["${var.allowed_ip}/32"]
+  cidr_blocks = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.gocd_lb_ruleset.id}"
 }
 
@@ -26,8 +26,7 @@ resource "aws_security_group_rule" "lb_allow_gocd_ports_out" {
   from_port = 8153
   to_port = 8154
   protocol = "tcp"
-  # source_security_group_id = "${aws_security_group.gocd_server_ruleset.id}"
-  cidr_blocks = ["10.0.0.0/16"]
+  source_security_group_id = "${aws_security_group.gocd_server_ruleset.id}"
   security_group_id = "${aws_security_group.gocd_lb_ruleset.id}"
 }
 
@@ -35,7 +34,7 @@ resource "aws_alb" "gocd_lb" {
   name = "gocd-server-alb-${var.environment}"
   internal = false
   security_groups = ["${aws_security_group.gocd_lb_ruleset.id}"]
-  subnets = ["${module.vpc.public_subnet_ids}"]
+  subnets = "${var.public_subnet_ids}"
   tags {
     Name = "GoCD LB for ${var.environment} "
     Vpc = "gocd"
@@ -71,7 +70,7 @@ resource "aws_alb_target_group" "gocd_group_http" {
   name     = "gocd-lb-group-http-${var.environment}"
   port     = 8153
   protocol = "HTTP"
-  vpc_id   = "${module.vpc.vpc_id}"
+  vpc_id   = "${var.vpc_id}"
   tags {
     Name = "GoCD LB Group"
     Vpc = "gocd"
@@ -87,7 +86,7 @@ resource "aws_alb_target_group" "gocd_group_https" {
   name     = "gocd-lb-group-https-${var.environment}"
   port     = 8154
   protocol = "HTTPS"
-  vpc_id   = "${module.vpc.vpc_id}"
+  vpc_id   = "${var.vpc_id}"
   tags {
     Name = "GoCD LB Group SSL"
     Vpc = "gocd"

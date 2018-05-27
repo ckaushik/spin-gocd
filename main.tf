@@ -1,21 +1,13 @@
-
 provider "aws" {
   region = "${var.aws_region}"
   profile = "${var.aws_profile}"
 }
 
-module "vpc" {
-  source = "github.com/kief/spin-vpc/modules/vpc"
-  aws_region = "${var.aws_region}"
-  availability_zones = "${var.availability_zones}"
-  vpc_name = "gocd"
-  aws_amis = "${var.aws_amis}"
-  environment = "${var.environment}"
-  allowed_ip = "${var.allowed_ip}"
-  bastion_ssh_key_public_file = "${var.bastion_ssh_key_public_file}"
+terraform {
+  backend "s3" {
+    bucket               = "terraform-hotstar-state"
+    region               = "ap-south-1"
+    key                  = "gocd"
+    workspace_key_prefix = "terraform-states"
+  }
 }
-
-output "bastion_host_ip" {
-  value = "${module.vpc.bastion_host_ip}"
-}
-

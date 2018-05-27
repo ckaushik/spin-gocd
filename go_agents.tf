@@ -5,7 +5,7 @@ resource "aws_autoscaling_group" "go_agent_pool" {
   max_size = 2
   min_size = 1
   desired_capacity = 1
-  vpc_zone_identifier = ["${module.vpc.private_subnet_id}"]
+  vpc_zone_identifier = ["${var.subnet_id}"]
   launch_configuration = "${aws_launch_configuration.launch_a_go_agent.name}"
   lifecycle { create_before_destroy = true }
   tag {
@@ -30,7 +30,6 @@ resource "aws_launch_configuration" "launch_a_go_agent" {
   image_id = "${lookup(var.aws_amis, var.aws_region)}"
   instance_type = "t2.micro"
   security_groups = [
-    "${module.vpc.common_private_security_group_id}",
     "${aws_security_group.gocd_agent_ruleset.id}"
   ]
   iam_instance_profile = "${var.iam_instance_profile_for_builder}"
@@ -59,7 +58,7 @@ resource "aws_security_group" "gocd_agent_ruleset" {
     Environment = "${var.environment}"
   }
   name = "gocd_agent_ruleset"
-  vpc_id = "${module.vpc.vpc_id}"
+  vpc_id = "${var.vpc_id}"
 }
 
 resource "aws_security_group_rule" "allow_gocd_ports_out_from_agents" {

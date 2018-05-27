@@ -22,10 +22,9 @@ resource "aws_instance" "go_server" {
   instance_type = "t2.micro"
   ami = "${lookup(var.aws_amis, var.aws_region)}"
   vpc_security_group_ids = [
-    "${module.vpc.common_private_security_group_id}",
     "${aws_security_group.gocd_server_ruleset.id}"
   ]
-  subnet_id = "${module.vpc.private_subnet_id}"
+  subnet_id = "${var.subnet_id}"
   key_name = "${aws_key_pair.gocd_keypair.id}"
   user_data = "${data.template_file.go_server_provisioning_script.rendered}"
 }
@@ -37,7 +36,7 @@ resource "aws_security_group" "gocd_server_ruleset" {
     Environment = "${var.environment}"
   }
   name = "gocd_server_ruleset"
-  vpc_id = "${module.vpc.vpc_id}"
+  vpc_id = "${var.vpc_id}"
 }
 
 resource "aws_security_group_rule" "allow_gocd_ports_into_server" {
@@ -45,8 +44,16 @@ resource "aws_security_group_rule" "allow_gocd_ports_into_server" {
   from_port = 8153
   to_port = 8154
   protocol = "tcp"
-  # source_security_group_id = "${aws_security_group.gocd_lb_ruleset.id}"
-  cidr_blocks = ["10.0.0.0/16"]
+  source_security_group_id = "${aws_security_group.gocd_lb_ruleset.id}"
+  security_group_id = "${aws_security_group.gocd_server_ruleset.id}"
+}
+
+resource "aws_security_group_rule" "allow_gocd_to_access_internet" {
+  type = "egress"
+  from_port = 0
+  to_port = 0
+  protocol = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.gocd_server_ruleset.id}"
 }
 

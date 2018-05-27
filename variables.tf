@@ -31,13 +31,19 @@ variable "https_port" {
 }
 
 variable "vpc_git_repo_url" {
-  default = "https://github.com/kief/spin-vpc.git"
+  default = "https://github.com/ckaushik/spin-vpc.git"
 }
 
 variable "availability_zones" {
-  default = {}
+  type = "map"
 }
 
+variable "public_subnet_ids" {
+  type = "list"
+}
+
+variable "vpc_id" {}
+variable "subnet_id" {}
 variable "environment" {}
 variable "allowed_ip" {}
 variable "gocd_ssl_certificate_arn" {}

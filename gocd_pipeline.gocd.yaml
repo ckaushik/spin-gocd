@@ -3,7 +3,7 @@ pipelines:
     group: cloud_spin
     materials:
       spin_vpc_git:
-        git: https://github.com/kief/spin-gocd.git
+        git: https://github.com/ckaushik/spin-gocd.git
     stages:
       - validate:
           jobs:
