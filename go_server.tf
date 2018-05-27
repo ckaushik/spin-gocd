@@ -8,7 +8,7 @@ data "template_file" "go_server_provisioning_script" {
   template = "${file("provisioning-scripts/gocd_server.sh")}"
 
   vars {
-    vpc_git_repo_url = "${var.vpc_git_repo_url}"
+    gocd_git_repo_url = "${var.gocd_git_repo_url}"
     gocd_agent_key = "${var.gocd_agent_key}"
   }
 }
@@ -45,6 +45,15 @@ resource "aws_security_group_rule" "allow_gocd_ports_into_server" {
   to_port = 8154
   protocol = "tcp"
   source_security_group_id = "${aws_security_group.gocd_lb_ruleset.id}"
+  security_group_id = "${aws_security_group.gocd_server_ruleset.id}"
+}
+
+resource "aws_security_group_rule" "allow_gocd_agent_ports_into_server" {
+  type = "ingress"
+  from_port = 8153
+  to_port = 8154
+  protocol = "tcp"
+  source_security_group_id = "${aws_security_group.gocd_agent_ruleset.id}"
   security_group_id = "${aws_security_group.gocd_server_ruleset.id}"
 }
 

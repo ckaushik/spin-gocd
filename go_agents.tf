@@ -1,7 +1,5 @@
-
 resource "aws_autoscaling_group" "go_agent_pool" {
-  name = "agents-${var.environment}"
-  # name = "${aws_launch_configuration.launch_a_go_agent.name}-pool"
+  name_prefix = "agents-${var.environment}-"
   max_size = 2
   min_size = 1
   desired_capacity = 1
@@ -41,7 +39,6 @@ resource "aws_launch_configuration" "launch_a_go_agent" {
 
 data "template_file" "go_agent_provisioning_script" {
   template = "${file("provisioning-scripts/gocd_agent.sh")}"
-  depends_on = ["aws_instance.go_server"]
 
   vars {
     go_server_url = "${aws_instance.go_server.private_ip}"
@@ -61,13 +58,11 @@ resource "aws_security_group" "gocd_agent_ruleset" {
   vpc_id = "${var.vpc_id}"
 }
 
-resource "aws_security_group_rule" "allow_gocd_ports_out_from_agents" {
+resource "aws_security_group_rule" "allow_all_ports_out_from_agents" {
   type = "egress"
-  from_port = 8153
-  to_port = 8154
-  protocol = "tcp"
-  cidr_blocks = ["10.0.0.0/16"]
+  from_port = 0
+  to_port = 0
+  protocol = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.gocd_agent_ruleset.id}"
 }
-
-

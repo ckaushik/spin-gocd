@@ -30,8 +30,8 @@ variable "https_port" {
   default = "443"
 }
 
-variable "vpc_git_repo_url" {
-  default = "https://github.com/ckaushik/spin-vpc.git"
+variable "gocd_git_repo_url" {
+  default = "https://github.com/ckaushik/spin-gocd.git"
 }
 
 variable "availability_zones" {
